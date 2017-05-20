@@ -19,25 +19,55 @@ bool friendlyWithinDistance(const State& st, int r, int s) {
     return false;
 }
 
-std::vector<std::pair<int, int> > dummyActions (const State& st) {
-
-  std::vector<std::pair<int, int> > possibleMoves;
-  for (int i = 0; i < st.rows; i++) {
-      for (int j = 0; j < st.cols; j++) {
-          if (st.isEmptyCell(i, j) && friendlyWithinDistance(st, i, j))
-              possibleMoves.push_back(std::make_pair(i, j));
-      }
+bool placeable(State state, int x, int y){
+  int neib = 0, newX, newY;
+  int dx[] = {0, 0, 1, -1, 1, 1, -1, -1};
+  int dy[] = {1, -1, 0, 0, 1, -1, -1, 1};
+  for(int i = 0; i < 8; ++i){
+    newX = x + dx[i];
+    newY = y + dy[i];
+    if(state.isMineCell(newX, newY)
+        neib++;
   }
-  return possibleMoves;
+  return neib <= 3 && neib >= 2;
 }
 
-int main() {
-    for( std::string line; getline( std::cin, line );){
-        auto state = State(line);
-     	
-	int counter  = 0;
-	std::vector <std::pair<int, int> > moves; 
+/*
+std::vector <std::pair<int, int> > random(State state){
+	std::vector <std::pair<int, int> > moves;
+  bool ok = true;
+  int count_friendly = 0, nr, placed = 0;
+  for(int i = 0; i < state.rows; ++i){
+    for(int j = 0; j < state.cols; ++j)
+      if(state.isMineCell(i, j))
+          count_friendly++;
+  }
+  while(ok){
+    nr = rand() % 10;
+    if(nr <= count_friendly){
+      ok = false;
+      break; 
+    }
+  }
+  count_friendly = 0;
+  for(int i = 0; i < state.rows; ++i){
+    for(int j = 0; j < state.cols; ++j){
+      if(state.isMineCell(i, j) && count_friendly < nr)
+        count_friendly++;
+      else if(state.isMineCell(i, j) && count_friendly >= nr && placed < state.cellsRemaining)
+        placed++;
+          
+      }
+    }
+  }
+}*/
 
+
+int main() {
+  for( std::string line; getline( std::cin, line );){
+      auto state = State(line);
+	int counter  = 0;
+	std::vector <std::pair<int, int> > moves;
 	for(int i = 0; i < state.rows; i++){
 		for(int j = 0; j < state.cols; j++){
 			if( state.isMineCell(i,j) && state.inField(i - 1 , j - 1) && state.field[i - 1][j - 1] != '#'  && (counter < state.cellGainPerTurn) ){
@@ -48,6 +78,6 @@ int main() {
 	}
 
 	state.commitAction(std::cout, moves);
-    }
+  }
 
 }
