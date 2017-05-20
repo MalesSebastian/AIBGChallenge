@@ -37,7 +37,7 @@ bool placeable(State state, int x, int y){
 std::vector <std::pair<int, int> > random(State state){
 	std::vector <std::pair<int, int> > moves;
   bool ok = true;
-  int count_friendly = 0, nr;
+  int count_friendly = 0, nr, placed = 0;
   for(int i = 0; i < state.rows; ++i){
     for(int j = 0; j < state.cols; ++j)
       if(state.isMineCell(i, j))
@@ -55,15 +55,16 @@ std::vector <std::pair<int, int> > random(State state){
     for(int j = 0; j < state.cols; ++j){
       if(state.isMineCell(i, j) && count_friendly < nr)
         count_friendly++;
-      else if(state.isMineCell(i, j) && count_friendly >= nr && count_friendly - nr < state.cellsRemaining)
+      else if(state.isMineCell(i, j) && placed < state.cellsRemaining){
         ok = true;
         int direction = rand() % 8;
         if(placeable(state, i + dx[direction], j + dy[direction])){
-          count_friendly++; 
+          placed++;
           moves.push_back(std::make_pair(i + dx[direction], j + dy[direction]));
         }
       }
     }
+  }
   return moves;
 }
 
