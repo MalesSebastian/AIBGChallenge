@@ -59,7 +59,7 @@ void arrange_items(int x, int y){
 				case 4: 
 					if( isMineCell(i, j) && isEmptyCell(i, j-1) ){
 						moves.push_back({x, y});
-						side++;
+						side = 1;
 					}
 					break;
 			}
