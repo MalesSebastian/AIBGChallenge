@@ -70,32 +70,37 @@ std::vector <std::pair<int, int> > random(State state){
 
 std::vector <std::pair<int, int> >arrange_items(State state){
 	std::vector <std::pair<int, int> > moves;
-  	int side = 1;
+  int side = 1;
+  int counter = 0;
 	for(int i = 0; i < state.rows; i++){
 		for(int j = 0; j < state.cols; j++){
 			switch (side){
 				case 1:
-					if( state.isMineCell(i, j) && state.isEmptyCell(i-1, j) ){
+					if( state.isMineCell(i, j) && state.isEmptyCell(i-1, j) && counter < state.cellsRemaining){
 						moves.push_back(std::make_pair(i-1,j));
 						side++;
+            counter++;
 					}
 					break;
 				case 2:
-					if( state.isMineCell(i, j) && state.isEmptyCell(i, j+1) ){
+					if( state.isMineCell(i, j) && state.isEmptyCell(i, j+1) && counter < state.cellsRemaining){
 						moves.push_back(std::make_pair(i,j+1));
 						side++;
+            counter++;
 					}
 					break;
 				case 3:
-					if( state.isMineCell(i, j) && state.isEmptyCell(i+1, j) ){
+					if( state.isMineCell(i, j) && state.isEmptyCell(i+1, j) && counter < state.cellsRemaining){
 						moves.push_back(std::make_pair(i+1,j));
 						side++;
+            counter++;
 					}
 					break;
 				case 4: 
-					if( state.isMineCell(i, j) && state.isEmptyCell(i, j-1) ){
+					if( state.isMineCell(i, j) && state.isEmptyCell(i, j-1) && counter < state.cellsRemaining){
 						moves.push_back(std::make_pair(i,j-1));
 						side = 1;
+            counter++;
 					}
 					break;
 			}
