@@ -5,6 +5,9 @@
 
 #include "utility.hpp"
 
+int dx[] = {0, 0, 1, -1, 1, 1, -1, -1};
+int dy[] = {1, -1, 0, 0, 1, -1, -1, 1};
+
 int distance(int x1, int y1, int x2, int y2) {
     return std::max(abs(x1 - x2), abs(y1 - y2));
 }
@@ -21,22 +24,20 @@ bool friendlyWithinDistance(const State& st, int r, int s) {
 
 bool placeable(State state, int x, int y){
   int neib = 0, newX, newY;
-  int dx[] = {0, 0, 1, -1, 1, 1, -1, -1};
-  int dy[] = {1, -1, 0, 0, 1, -1, -1, 1};
   for(int i = 0; i < 8; ++i){
     newX = x + dx[i];
     newY = y + dy[i];
-    if(state.isMineCell(newX, newY)
+    if(state.isMineCell(newX, newY))
         neib++;
   }
   return neib <= 3 && neib >= 2;
 }
 
-/*
+
 std::vector <std::pair<int, int> > random(State state){
 	std::vector <std::pair<int, int> > moves;
   bool ok = true;
-  int count_friendly = 0, nr, placed = 0;
+  int count_friendly = 0, nr;
   for(int i = 0; i < state.rows; ++i){
     for(int j = 0; j < state.cols; ++j)
       if(state.isMineCell(i, j))
@@ -54,13 +55,17 @@ std::vector <std::pair<int, int> > random(State state){
     for(int j = 0; j < state.cols; ++j){
       if(state.isMineCell(i, j) && count_friendly < nr)
         count_friendly++;
-      else if(state.isMineCell(i, j) && count_friendly >= nr && placed < state.cellsRemaining)
-        placed++;
-          
+      else if(state.isMineCell(i, j) && count_friendly >= nr && count_friendly - nr < state.cellsRemaining)
+        ok = true;
+        int direction = rand() % 8;
+        if(placeable(state, i + dx[direction], j + dy[direction])){
+          count_friendly++; 
+          moves.push_back(std::make_pair(i + dx[direction], j + dy[direction]));
+        }
       }
     }
-  }
-}*/
+  return moves;
+}
 
 
 int main() {
