@@ -107,12 +107,13 @@ std::vector <std::pair<int, int> >arrange_items(State state){
 int main() {
   for(std::string line; getline( std::cin, line );){
     auto state = State(line);
+    std::vector <std::pair<int, int> >response;
     int counter = 0;
     if(state.cellGainPerTurn < 3)
-      auto response = random(state);
+      response = random(state);
     
     else
-      auto response = arrange_items(state);
+      response = arrange_items(state);
     
     state.commitAction(std::cout, response);
   }
