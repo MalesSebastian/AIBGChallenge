@@ -68,6 +68,42 @@ std::vector <std::pair<int, int> > random(State state){
 }
 
 
+std::vector <std::pair<int, int> >arrange_items(State state, int x, int y){
+	std::vector <std::pair<int, int> > moves;
+  int side = 1;
+	for(int i = 0; i < state.rows; i++){
+		for(int j = 0; j < state.cols; j++){
+			switch (side){
+				case 1:
+					if( isMineCell(i, j) && isEmptyCell(i-1, j) ){
+						moves.push_back({x, y});
+						side++;
+					}
+					break;
+				case 2:
+					if( isMineCell(i, j) && isEmptyCell(i, j+1) ){
+						moves.push_back({x, y});
+						side++;
+					}
+					break;
+				case 3:
+					if( isMineCell(i, j) && isEmptyCell(i+1, j) ){
+						moves.push_back({x, y});
+						side++;
+					}
+					break;
+				case 4: 
+					if( isMineCell(i, j) && isEmptyCell(i, j-1) ){
+						moves.push_back({x, y});
+						side = 1;
+					}
+					break;
+			}
+		}
+	}
+  return moves;
+}
+
 int main() {
   for( std::string line; getline( std::cin, line );){
       auto state = State(line);
