@@ -67,38 +67,49 @@ std::vector <std::pair<int, int> > random(State state){
   return moves;
 }
 
+void get_line(int x, int y, std::pair<int, int>square_init){
+	if( isEmptyCell(x-1, y) ){
+		if( isEmptyCell(x-1, y-1) && isEmptyCell(x-1, y+1) ){
+			square.first=x-1;
+			square.second=y-1;
+		    	moves.push_back(std::make_pair( x-1, y-1 ) );
+			moves.push_back(std::make_pair( x-1, y ) );
+			moves.push_back(std::make_pair( x-1, y+1 ) );
+		}
+		else{
+			moves.push_back(std::make_pair( x-1, y ) );
+			/// RANDOM
+		}
+	}
+}
+
+void get_square(int x, int y){
+	if(isEmptyCell(x, y-1) && isEmptyCell(x-1, y) && isEmptyCell(x-1, y-1) ){
+		moves.push_back(std::make_pair( x, y-1 ) );
+		moves.push_back(std::make_pair( x-1, y ) );
+		moves.push_back(std::make_pair( x-1, y-1 ) );
+	}
+	else{
+		/// RANDOM
+	}
+}
+
+bool flag = true;
 
 std::vector <std::pair<int, int> >arrange_items(State state){
 	std::vector <std::pair<int, int> > moves;
-  	int side = 1;
 	for(int i = 0; i < state.rows; i++){
 		for(int j = 0; j < state.cols; j++){
-			switch (side){
-				case 1:
-					if( state.isMineCell(i, j) && state.isEmptyCell(i-1, j) ){
-						moves.push_back(std::make_pair(i-1,j));
-						side++;
-					}
-					break;
-				case 2:
-					if( state.isMineCell(i, j) && state.isEmptyCell(i, j+1) ){
-						moves.push_back(std::make_pair(i,j+1));
-						side++;
-					}
-					break;
-				case 3:
-					if( state.isMineCell(i, j) && state.isEmptyCell(i+1, j) ){
-						moves.push_back(std::make_pair(i+1,j));
-						side++;
-					}
-					break;
-				case 4: 
-					if( state.isMineCell(i, j) && state.isEmptyCell(i, j-1) ){
-						moves.push_back(std::make_pair(i,j-1));
-						side = 1;
-					}
-					break;
-			}
+			if( isMineCell(i, j) ){
+				if(flag){
+					std::pair<int, int> square_init;
+					get_line(i, j);
+					flag = false;
+				}	
+				else{
+					
+				}
+			}				
 		}
 	}
   return moves;
@@ -111,7 +122,6 @@ int main() {
     int counter = 0;
     if(state.cellGainPerTurn < 3)
       response = random(state);
-    
     else
       response = arrange_items(state);
     
