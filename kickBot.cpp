@@ -71,40 +71,19 @@ std::vector <std::pair<int, int> > random(State state){
 
 std::vector <std::pair<int, int> >arrange_items(State state){
 	std::vector <std::pair<int, int> > moves;
-  int side = 1;
   int counter = 0;
 	for(int i = 0; i < state.rows; i++){
 		for(int j = 0; j < state.cols; j++){
-			switch (side){
-				case 1:
-					if( state.isMineCell(i, j) && state.isEmptyCell(i-1, j) && counter < state.cellsRemaining){
-						moves.push_back(std::make_pair(i-1,j));
-						side++;
-            counter++;
-					}
-					break;
-				case 2:
-					if( state.isMineCell(i, j) && state.isEmptyCell(i, j+1) && counter < state.cellsRemaining){
-						moves.push_back(std::make_pair(i,j+1));
-						side++;
-            counter++;
-					}
-					break;
-				case 3:
-					if( state.isMineCell(i, j) && state.isEmptyCell(i+1, j) && counter < state.cellsRemaining){
-						moves.push_back(std::make_pair(i+1,j));
-						side++;
-            counter++;
-					}
-					break;
-				case 4: 
-					if( state.isMineCell(i, j) && state.isEmptyCell(i, j-1) && counter < state.cellsRemaining){
-						moves.push_back(std::make_pair(i,j-1));
-						side = 1;
-            counter++;
-					}
-					break;
-			}
+      if(state.isMineCell(i, j)){
+        for(int k = 0; k < 4; ++k){
+          int newX = i + dx[k];
+          int newY = j + dy[k];
+          if(state.isEmptyCell(newX, newY) && counter < state.cellsRemaining && placeable(state, newX, newY)){
+						  moves.push_back(std::make_pair(newX, newY));
+              counter++;
+          }  
+        }
+      }
 		}
 	}
   return moves;
