@@ -68,33 +68,33 @@ std::vector <std::pair<int, int> > random(State state){
 }
 
 
-std::vector <std::pair<int, int> >arrange_items(State state, int x, int y){
+std::vector <std::pair<int, int> >arrange_items(State state){
 	std::vector <std::pair<int, int> > moves;
-  int side = 1;
+  	int side = 1;
 	for(int i = 0; i < state.rows; i++){
 		for(int j = 0; j < state.cols; j++){
 			switch (side){
 				case 1:
 					if( state.isMineCell(i, j) && state.isEmptyCell(i-1, j) ){
-						moves.push_back(std::make_pair(x,y));
+						moves.push_back(std::make_pair(i-1,j));
 						side++;
 					}
 					break;
 				case 2:
 					if( state.isMineCell(i, j) && state.isEmptyCell(i, j+1) ){
-						moves.push_back(std::make_pair(x,y));
+						moves.push_back(std::make_pair(i,j+1));
 						side++;
 					}
 					break;
 				case 3:
 					if( state.isMineCell(i, j) && state.isEmptyCell(i+1, j) ){
-						moves.push_back(std::make_pair(x,y));
+						moves.push_back(std::make_pair(i+1,j));
 						side++;
 					}
 					break;
 				case 4: 
 					if( state.isMineCell(i, j) && state.isEmptyCell(i, j-1) ){
-						moves.push_back(std::make_pair(x,y));
+						moves.push_back(std::make_pair(i,j-1));
 						side = 1;
 					}
 					break;
@@ -107,11 +107,13 @@ std::vector <std::pair<int, int> >arrange_items(State state, int x, int y){
 int main() {
   for(std::string line; getline( std::cin, line );){
     auto state = State(line);
-	  int counter = 0;
+    int counter = 0;
     if(state.cellGainPerTurn < 3)
       auto response = random(state);
+    
     else
       auto response = arrange_items(state);
-	  state.commitAction(std::cout, moves);
+    
+    state.commitAction(std::cout, response);
   }
 }
