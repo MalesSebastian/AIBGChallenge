@@ -58,7 +58,7 @@ std::vector <std::pair<int, int> > random(State state){
       else if(state.isMineCell(i, j) && placed < state.cellsRemaining){
         ok = true;
         int direction = rand() % 8;
-        if(placeable(state, i + dx[direction], j + dy[direction])){
+        if(placeable(state, i + dx[direction], j + dy[direction]) && state.isEmptyCell(i + dx[direction], j + dy[direction])){
           placed++;
           moves.push_back(std::make_pair(i + dx[direction], j + dy[direction]));
         }
