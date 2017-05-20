@@ -19,13 +19,13 @@ bool friendlyWithinDistance(const State& st, int r, int s) {
     return false;
 }
 
-std::vector<std::pair<int, int>> dummyActions (const State& st) {
+std::vector<std::pair<int, int> > dummyActions (const State& st) {
 
-  std::vector<std::pair<int, int>> possibleMoves;
+  std::vector<std::pair<int, int> > possibleMoves;
   for (int i = 0; i < st.rows; i++) {
       for (int j = 0; j < st.cols; j++) {
           if (st.isEmptyCell(i, j) && friendlyWithinDistance(st, i, j))
-              possibleMoves.push_back({i,j});
+              possibleMoves.push_back(std::make_pair(i, j));
       }
   }
   return possibleMoves;
@@ -40,8 +40,8 @@ int main() {
 
 	for(int i = 0; i < state.rows; i++){
 		for(int j = 0; j < state.cols; j++){
-			if( state.isMineCell(i,j) && (state.inField(i -1 , j - 1)) && (counter < state.cellGainPerTurn) ){
-			    moves.push_back({i - 1,j -1});
+			if( state.isMineCell(i,j) && state.inField(i - 1 , j - 1) && state.field[i - 1][j - 1] != '#'  && (counter < state.cellGainPerTurn) ){
+			    moves.push_back(std::make_pair(i - 1, j - 1));
 			    counter++;
 			}
 		}
