@@ -75,26 +75,26 @@ std::vector <std::pair<int, int> >arrange_items(State state, int x, int y){
 		for(int j = 0; j < state.cols; j++){
 			switch (side){
 				case 1:
-					if( isMineCell(i, j) && isEmptyCell(i-1, j) ){
-						moves.push_back({x, y});
+					if( state.isMineCell(i, j) && state.isEmptyCell(i-1, j) ){
+						moves.push_back(std::make_pair(x,y));
 						side++;
 					}
 					break;
 				case 2:
-					if( isMineCell(i, j) && isEmptyCell(i, j+1) ){
-						moves.push_back({x, y});
+					if( state.isMineCell(i, j) && state.isEmptyCell(i, j+1) ){
+						moves.push_back(std::make_pair(x,y));
 						side++;
 					}
 					break;
 				case 3:
-					if( isMineCell(i, j) && isEmptyCell(i+1, j) ){
-						moves.push_back({x, y});
+					if( state.isMineCell(i, j) && state.isEmptyCell(i+1, j) ){
+						moves.push_back(std::make_pair(x,y));
 						side++;
 					}
 					break;
 				case 4: 
-					if( isMineCell(i, j) && isEmptyCell(i, j-1) ){
-						moves.push_back({x, y});
+					if( state.isMineCell(i, j) && state.isEmptyCell(i, j-1) ){
+						moves.push_back(std::make_pair(x,y));
 						side = 1;
 					}
 					break;
@@ -105,20 +105,13 @@ std::vector <std::pair<int, int> >arrange_items(State state, int x, int y){
 }
 
 int main() {
-  for( std::string line; getline( std::cin, line );){
-      auto state = State(line);
-	int counter  = 0;
-	std::vector <std::pair<int, int> > moves;
-	for(int i = 0; i < state.rows; i++){
-		for(int j = 0; j < state.cols; j++){
-			if( state.isMineCell(i,j) && state.inField(i - 1 , j - 1) && state.field[i - 1][j - 1] != '#'  && (counter < state.cellGainPerTurn) ){
-			    moves.push_back(std::make_pair(i - 1, j - 1));
-			    counter++;
-			}
-		}
-	}
-
-	state.commitAction(std::cout, moves);
+  for(std::string line; getline( std::cin, line );){
+    auto state = State(line);
+	  int counter = 0;
+    if(state.cellGainPerTurn < 3)
+      auto response = random(state);
+    else
+      auto response = arrange_items(state);
+	  state.commitAction(std::cout, moves);
   }
-
 }
